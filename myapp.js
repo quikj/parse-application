@@ -1,7 +1,24 @@
 /**
+ * Created by quikj on 9/24/15.
+ */
+/**
  * Created by quikj on 9/23/15.
  */
-angular.module('firstApp',['ionic','App services'])
+myApp = angular.module('firstApp',['ionic','App services']);
+    myApp.config(function($stateProvider, $urlRouterProvider) {
+
+        $stateProvider
+            .state('home', {
+                url: "/home",
+                templateUrl: "index.html",
+                controller: "FirstController"
+            })
+            .state('detail', {
+                url: "/detail",
+                templateUrl: "detail.html",
+                controller: "detailCtrl"
+            });
+    })
     .controller('FirstController', function($scope,ParseHttpService) {
         $scope.myName = "Gyasi Jordan";
 
@@ -58,6 +75,17 @@ angular.module('firstApp',['ionic','App services'])
                 }
 
             };
+        $scope.deleteObject = function deleteObject(_objectId) {
+            ParseHttpService.deleteObjectById(_objectId)
+                .then(function itemSaved(_deletedObject) {
+                    alert("Item Deleted " + _deletedObject.objectId);
+
+                    return populateList();
+
+                }, function errorDeleting(_error) {
+                    alert("Error Deleting Object " + _objectId)
+                });
+        };
 
         /*gets a list of items in Parse account*/
         function populateList() {
@@ -70,4 +98,10 @@ angular.module('firstApp',['ionic','App services'])
             alert("User logged in " + _loggedInUser.username);
             return populateList();
         })
+    })
+    .controller('detailCtrl', function ($scope, $state) {
+        $scope.stateInfo = $state.current;
+        $scope.params = $state.params;
     });
+
+
