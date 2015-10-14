@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-    <ion-view title="Detail">
-        <ion-content class="padding">
-            <pre class="padding">{{stateInfo | json}}</pre>
-            <pre class="padding">{{params | json}}</pre>
-        </ion-content>
-    </ion-view>
-</head>
-<body>
+<ion-view title="Detail - {{params.objectId}}">
+    <ion-content class="padding">
+        <ion-item>
+            <div>{{item.name}}</div>
+            <div>{{item.room}}</div>
+            <!-- https://docs.angularjs.org/api/ng/filter/date -->
+            <div>{{item.createdAt | date:'medium'}}</div>
+            <div>{{item.updatedAt | date:'medium'}}</div>
+        </ion-item>
 
-</body>
-</html>
+        <pre class="padding">{{stateInfo | json}}</pre>
+        <pre class="padding">{{params | json}}</pre>
+
+    </ion-content>
+</ion-view>
