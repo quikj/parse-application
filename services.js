@@ -1,8 +1,8 @@
 /**
  * Created by quikj on 9/25/15.
  */
-angular.module('App services',[])
-.service('ParseHttpService', function ($http) {
+angular.module('AppServices',[])
+    .service('ParseHttpService', function ($http) {
     var baseURL = "https://api.parse.com/1/";
     var authenticationHeaders = PARSE__HEADER_CREDENTIALS;
 
@@ -31,6 +31,16 @@ angular.module('App services',[])
                     console.log('login', response);
                     return response.data;
                 });
+        },
+        getObjectByID: function getObjectByID(_ID) {
+            var settings = {
+                headers: authenticationHeaders
+            };
+            return $http.get(baseURL + 'classes/stuff/' + _ID, settings)
+                .then(function (response) {
+                    console.log('getObjectByID', response);
+                    return response.data;
+                })
         },
         getAllObjects: function getAllObjects() {
             var settings = {
