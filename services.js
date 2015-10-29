@@ -5,30 +5,36 @@ angular.module('AppServices',[])
     .service('ParseHttpService', function ($http) {
     var baseURL = "https://api.parse.com/1/";
     var authenticationHeaders = PARSE__HEADER_CREDENTIALS;
+    var CurrentUser = null;
 
     return {
-        login: function () {
+        getCurrentUser: function () {
+            if (CurrentUser) {
+                return $q.when(CurrentUser);
+            } else {
+                return $q.reject("NO USER");
+            }
+        },
 
-            var credentials = {
-                "username": "admin",
-                "password": "test"
-            };
+        login: function (credentials) {
 
             var settings = {
-                method: 'GET',
-                url: baseURL + 'login',
                 headers: authenticationHeaders,
                 // params are for query string parameters
-                params: credentials
+                params: {
+                    "username": (credentials && credentials.username),
+                    "password": (credentials && credentials.password)
+                }
             };
 
             // $http returns a promise, which has a then function,
             // which also returns a promise
-            return $http(settings)
+            return $http.get(baseURL + 'login', settings)
                 .then(function (response) {
                     // In the response resp.data contains the result
                     // check the console to see all of the data returned
                     console.log('login', response);
+                    CurrentUser = response.data;
                     return response.data;
                 });
         },
